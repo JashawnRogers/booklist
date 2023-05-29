@@ -67,4 +67,5 @@ document.getElementById("tableBody").addEventListener("click", (e) => {
   const ui = new UI();
 
   ui.deleteEntry(e.target);
+  ui.showAlert("Successfully deleted book!", "delete");
 });
