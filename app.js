@@ -23,6 +23,23 @@ class UI {
     entry.getAttribute("id") === "deleteBtn" &&
       entry.parentElement.parentElement.remove();
   }
+
+  clearFields() {
+    document.getElementById("form").reset();
+  }
+
+  showAlert(message, className) {
+    const element = `
+      <div class='${className} alert-container' id='alert'><p>${message}</p></div>
+    `;
+
+    document.getElementById("heading").insertAdjacentHTML("afterend", element);
+
+    setTimeout(() => {
+      const node = document.getElementById("alert");
+      node.remove();
+    }, 5000);
+  }
 }
 
 document.getElementById("submit").addEventListener("click", (e) => {
@@ -30,11 +47,19 @@ document.getElementById("submit").addEventListener("click", (e) => {
   const title = document.getElementById("title").value;
   const author = document.getElementById("author").value;
   const isbn = document.getElementById("isbn").value;
-
-  const book = new Book(title, author, isbn);
   const ui = new UI();
-  console.log(book);
-  ui.addBookToList(book);
+
+  if (title === "" || author === "" || isbn === "") {
+    ui.showAlert("All fields are required to save book!", "error");
+  } else {
+    const book = new Book(title, author, isbn);
+    console.log(book);
+    ui.addBookToList(book);
+
+    ui.clearFields();
+
+    ui.showAlert("Successfully added book to list!", "success");
+  }
 });
 
 document.getElementById("tableBody").addEventListener("click", (e) => {
